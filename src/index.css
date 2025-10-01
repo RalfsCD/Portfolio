@@ -4,19 +4,20 @@
 *::after { box-sizing: border-box; }
 
 html, body, #root { height: 100%; }
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   color: #fff;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  background: #0a0a0f; /* fallback while gradient boots */
-  overflow: hidden;
+  background: #0a0a0f; /* fallback – the .page handles the gradient */
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Remove default link focus outlines but keep accessibility */
+/* Accessible focus */
 a { color: inherit; }
 a:focus-visible, button:focus-visible {
   outline: 2px solid rgba(255,255,255,0.6);
