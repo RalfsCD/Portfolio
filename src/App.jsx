@@ -37,11 +37,14 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  // ===== NAVBAR glass on scroll =====
+  // ===== NAVBAR glass on scroll & cue hide =====
   useEffect(() => {
     const root = document.documentElement;
     const onScroll = () => {
-      root.classList.toggle("scrolled", window.scrollY > 8);
+      const y = window.scrollY;
+      root.classList.toggle("scrolled", y > 8);
+      // hide the scroll cue once user moves a bit
+      root.style.setProperty("--cue-o", y > 40 ? "0" : "1");
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -154,15 +157,9 @@ export default function App() {
           </a>
 
           <nav className="nav" aria-label="Galvenā navigācija">
-            <a href="#par-mani" className="nav__link">
-              Par mani
-            </a>
-            <a href="#projekti" className="nav__link">
-              Projekti
-            </a>
-            <a href="#kontakti" className="nav__link">
-              Kontakti
-            </a>
+            <a href="#par-mani" className="nav__link">Par mani</a>
+            <a href="#projekti" className="nav__link">Projekti</a>
+            <a href="#kontakti" className="nav__link">Kontakti</a>
           </nav>
 
           {/* Theme + mobile burger (icons only) */}
@@ -191,87 +188,80 @@ export default function App() {
 
         {/* Mobile drawer */}
         <div className="mobile-nav" aria-hidden={!navOpen}>
-          <a href="#par-mani" className="mnav__link" onClick={() => setNavOpen(false)}>
-            Par mani
-          </a>
-          <a href="#projekti" className="mnav__link" onClick={() => setNavOpen(false)}>
-            Projekti
-          </a>
-          <a href="#kontakti" className="mnav__link" onClick={() => setNavOpen(false)}>
-            Kontakti
-          </a>
+          <a href="#par-mani" className="mnav__link" onClick={() => setNavOpen(false)}>Par mani</a>
+          <a href="#projekti" className="mnav__link" onClick={() => setNavOpen(false)}>Projekti</a>
+          <a href="#kontakti" className="mnav__link" onClick={() => setNavOpen(false)}>Kontakti</a>
         </div>
       </header>
 
       {/* ===== HERO ===== */}
       <main id="sākums" className="hero">
         <h1 className="title">Portfolio</h1>
+
+        {/* NEW: Scroll cue */}
+        <a href="#par-mani" className="scroll-cue" aria-label="Ritināt uz leju">
+          <ChevronDown />
+        </a>
       </main>
 
-      {/* ===== PAR MANI ===== */}
-      <section id="par-mani" className="section section-about" aria-label="Par mani">
-        <h2 className="section__title">Par mani</h2>
-        <p className="about-text">
-          Šī sadaļa būs īss apraksts par mani, prasmēm un
-          tehnoloģijām, ar kurām strādāju.
-        </p>
-      </section>
+      {/* ===== CONTENT w/ TIMELINE SPINE ===== */}
+      <div className="timeline">
+        {/* ===== PAR MANI ===== */}
+        <section id="par-mani" className="section section-about" aria-label="Par mani">
+          <h2 className="section__title">Par mani</h2>
+          <p className="about-text">
+            Šī sadaļa būs īss apraksts par mani, prasmēm un
+            tehnoloģijām, ar kurām strādāju.
+          </p>
+        </section>
 
-      {/* ===== PROJEKTI (vietturis) ===== */}
-      <section id="projekti" className="section section-projects" aria-label="Projekti">
-        <div className="section-head">
-          <h2 className="section__title">Projekti</h2>
-          <span className="badge soon">Drīzumā</span>
-        </div>
+        {/* ===== PROJEKTI ===== */}
+        <section id="projekti" className="section section-projects" aria-label="Projekti">
+          <div className="section-head">
+            <h2 className="section__title">Projekti</h2>
+            <span className="badge soon">Drīzumā</span>
+          </div>
 
-        <div className="projects-grid">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="project-card skeleton" aria-hidden="true">
-              <div className="skel-thumb" />
-              <div className="skel-lines">
-                <span className="skel-line" />
-                <span className="skel-line short" />
+          <div className="projects-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="project-card skeleton" aria-hidden="true">
+                <div className="skel-thumb" />
+                <div className="skel-lines">
+                  <span className="skel-line" />
+                  <span className="skel-line short" />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <p className="projects-note">
-          Šeit drīzumā pievienošu savus projektus un aprakstus.
-        </p>
-      </section>
+          <p className="projects-note">
+            Šeit drīzumā pievienošu savus projektus un aprakstus.
+          </p>
+        </section>
 
-      {/* ===== KONTAKTI ===== */}
-      <section id="kontakti" className="section section-kontakti" aria-label="Kontakti">
-        <h2 className="section__title">Kontakti</h2>
-        <div className="contact-grid">
-          <a className="contact-item" href="tel:+37126927763" title="+371 26927763">
-            <PhoneIcon />
-            <span className="contact-text">+371 26927763</span>
-          </a>
-           <a
-            className="contact-item"
-            href="mailto:ralfscd@gmail.com"
-            title="ralfscd@gmail.com"
-          >
-            <GmailIcon />
-            <span className="contact-text">ralfscd@gmail.com</span>
-          </a>
-          <a
-            className="contact-item"
-            href="https://github.com/RalfsCD"
-            target="_blank"
-            rel="noreferrer"
-            title="github.com/RalfsCD"
-          >
-            <GithubIcon />
-            <span className="contact-text">github.com/RalfsCD</span>
-          </a>
-
-          {/* NEW: Gmail contact */}
-         
-        </div>
-      </section>
+        {/* ===== KONTAKTI ===== */}
+        <section id="kontakti" className="section section-kontakti" aria-label="Kontakti">
+          <h2 className="section__title">Kontakti</h2>
+          <div className="contact-grid">
+            <a className="contact-item" href="tel:+37126927763" title="+371 26927763">
+              <PhoneIcon /><span className="contact-text">+371 26927763</span>
+            </a>
+            <a className="contact-item" href="mailto:ralfscd@gmail.com" title="ralfscd@gmail.com">
+              <GmailIcon /><span className="contact-text">ralfscd@gmail.com</span>
+            </a>
+            <a
+              className="contact-item"
+              href="https://github.com/RalfsCD"
+              target="_blank"
+              rel="noreferrer"
+              title="github.com/RalfsCD"
+            >
+              <GithubIcon /><span className="contact-text">github.com/RalfsCD</span>
+            </a>
+            
+          </div>
+        </section>
+      </div>
 
       {/* vignette */}
       <div className="vignette" />
@@ -300,45 +290,18 @@ function PhoneIcon() {
     </svg>
   );
 }
-
-/* Sun/Moon stroke icons (icons only) */
+/* Sun/Moon stroke icons */
 function SunIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="20" height="20" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
     </svg>
   );
 }
 function MoonIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="20" height="20" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
     </svg>
   );
 }
@@ -346,18 +309,13 @@ function BurgerIcon({ open }) {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       {open ? (
-        <path
-          fill="currentColor"
-          d="M18.3 5.7L12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"
-        />
+        <path fill="currentColor" d="M18.3 5.7L12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z" />
       ) : (
         <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
       )}
     </svg>
   );
 }
-
-/** Gmail-style mail icon (monochrome to match the rest) */
 function GmailIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" className="icon">
@@ -365,6 +323,14 @@ function GmailIcon() {
         fill="currentColor"
         d="M20 4H4a2 2 0 0 0-2 2v12c0 1.105.895 2 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-.4 3.2-7.2 5.4a1 1 0 0 1-1.2 0L4.4 7.2A1 1 0 0 1 5.6 5.8l6.4 4.8 6.4-4.8a1 1 0 1 1 1.2 1.4Z"
       />
+    </svg>
+  );
+}
+/** Down chevron for scroll cue */
+function ChevronDown() {
+  return (
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path fill="currentColor" d="M12 15.5a1 1 0 0 1-.7-.3l-6-6 1.4-1.4L12 12.7l5.3-5.4 1.4 1.4-6 6a1 1 0 0 1-.7.3z" />
     </svg>
   );
 }
